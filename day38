@@ -1,0 +1,134 @@
+#include <stdio.h>
+#define MAX 100
+
+int deque[MAX];
+int front = -1, rear = -1;
+
+// Check empty
+int empty() {
+    return (front == -1);
+}
+
+// Check full
+int full() {
+    return ((rear + 1) % MAX == front);
+}
+
+// Push front
+void push_front(int x) {
+    if (full()) return;
+
+    if (empty()) {
+        front = rear = 0;
+    } else {
+        front = (front - 1 + MAX) % MAX;
+    }
+    deque[front] = x;
+}
+
+// Push back
+void push_back(int x) {
+    if (full()) return;
+
+    if (empty()) {
+        front = rear = 0;
+    } else {
+        rear = (rear + 1) % MAX;
+    }
+    deque[rear] = x;
+}
+
+// Pop front
+void pop_front() {
+    if (empty()) return;
+
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        front = (front + 1) % MAX;
+    }
+}
+
+// Pop back
+void pop_back() {
+    if (empty()) return;
+
+    if (front == rear) {
+        front = rear = -1;
+    } else {
+        rear = (rear - 1 + MAX) % MAX;
+    }
+}
+
+// Get front
+int getFront() {
+    if (empty()) return -1;
+    return deque[front];
+}
+
+// Get rear
+int getBack() {
+    if (empty()) return -1;
+    return deque[rear];
+}
+
+// Size
+int size() {
+    if (empty()) return 0;
+    if (rear >= front)
+        return rear - front + 1;
+    return MAX - front + rear + 1;
+}
+
+// Display
+void display() {
+    if (empty()) return;
+
+    int i = front;
+    while (1) {
+        printf("%d ", deque[i]);
+        if (i == rear) break;
+        i = (i + 1) % MAX;
+    }
+}
+
+int main() {
+    int n;
+    scanf("%d", &n);
+
+    char op[20];
+    int x;
+
+    while (n--) {
+        scanf("%s", op);
+
+        if (strcmp(op, "push_front") == 0) {
+            scanf("%d", &x);
+            push_front(x);
+        }
+        else if (strcmp(op, "push_back") == 0) {
+            scanf("%d", &x);
+            push_back(x);
+        }
+        else if (strcmp(op, "pop_front") == 0) {
+            pop_front();
+        }
+        else if (strcmp(op, "pop_back") == 0) {
+            pop_back();
+        }
+        else if (strcmp(op, "front") == 0) {
+            printf("%d\n", getFront());
+        }
+        else if (strcmp(op, "back") == 0) {
+            printf("%d\n", getBack());
+        }
+        else if (strcmp(op, "size") == 0) {
+            printf("%d\n", size());
+        }
+        else if (strcmp(op, "empty") == 0) {
+            printf("%d\n", empty());
+        }
+    }
+
+    return 0;
+}
